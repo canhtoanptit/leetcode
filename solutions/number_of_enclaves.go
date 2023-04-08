@@ -1,32 +1,40 @@
 package leetcode
 
-func numEnclaves(grid [][]int) int {
-	var result int
-	for i := 1; i < len(grid)-1; i++ {
-		for j := 0; j < len(grid)-1; j++ {
-			if grid[i][j] == 1 && check(grid, i, j) {
-				result++
+func numEnclaves(grid [][]int) (res int) {
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[i]); j++ {
+			if i*j == 0 || i == len(grid)-1 || j == len(grid[i])-1 {
+				if grid[i][j] == 1 {
+					fill(grid, i, j)
+				}
 			}
 		}
 	}
-	return result
+
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[i]); j++ {
+			if grid[i][j] == 1 {
+				res++
+			}
+		}
+	}
+
+	return res
 }
 
-func check(grid [][]int, i, j int) bool {
-	if i < 0 || j < 0 || i > len(grid) || j > len(grid) {
-		return false
+func fill(grid [][]int, i, j int) {
+	if i < 0 || j < 0 || i >= len(grid) || j >= len(grid[i]) {
+		return
 	}
 
 	if grid[i][j] == 0 {
-		return true
+		return
 	}
 
 	grid[i][j] = 0
 
-	up := check(grid, i-1, j)
-	down := check(grid, i+1, j)
-	left := check(grid, i, j-1)
-	right := check(grid, i, j+1)
-
-	return up && down && left && right
+	fill(grid, i-1, j)
+	fill(grid, i+1, j)
+	fill(grid, i, j-1)
+	fill(grid, i, j+1)
 }
