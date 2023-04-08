@@ -1,18 +1,15 @@
 package leetcode
 
-func closedIsland(grid [][]int) int {
-	// find number of island
-	// loop every island is close island
-	var result int
+func closedIsland(grid [][]int) (res int) {
 	for i := 1; i < len(grid)-1; i++ {
-		for j := 1; j < len(grid)-1; j++ {
+		for j := 1; j < len(grid[i])-1; j++ {
 			if grid[i][j] == 0 && flood(grid, i, j) {
-				result++
+				res++
 			}
 		}
 	}
 
-	return result
+	return res
 }
 
 func flood(grid [][]int, i, j int) bool {
